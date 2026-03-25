@@ -8,7 +8,7 @@ export function AuthProvider({ children }) {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    const API_URL = 'http://localhost:8000/api';
+    const API_URL = 'http://127.0.0.1:8000/api';
 
     useEffect(() => {
         const savedUser = localStorage.getItem('aura-user');

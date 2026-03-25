@@ -31,7 +31,7 @@ export function AppProvider({ children }) {
     const [reviews, setReviews] = useState([]); // peer review queue
     const [notifications, setNotifications] = useState([]);
 
-    const API_URL = 'http://localhost:8000/api';
+    const API_URL = 'http://127.0.0.1:8000/api';
 
     // Load saved data from backend
     useEffect(() => {
