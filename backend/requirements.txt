@@ -4,3 +4,5 @@ aiosqlite
 pydantic
 python-dotenv
 python-multipart
+gunicorn
+uvicorn
