@@ -31,27 +31,88 @@ export function AppProvider({ children }) {
     const [reviews, setReviews] = useState([]); // peer review queue
     const [notifications, setNotifications] = useState([]);
 
-    // Load saved data
+    const API_URL = 'http://localhost:8000/api';
+
+    // Load saved data from backend
     useEffect(() => {
         if (!user) return;
-        const savedData = localStorage.getItem(`aura-data-${user.uid}`);
-        if (savedData) {
-            const parsed = JSON.parse(savedData);
-            setGarden(parsed.garden || createInitialGarden());
-            setWallet(parsed.wallet || createInitialWallet());
-            setTasks(parsed.tasks || []);
-            setMoods(parsed.moods || []);
-            setFears(parsed.fears || []);
-            setReviews(parsed.reviews || []);
-        }
+
+        const loadData = async () => {
+            try {
+                // 1. Load general user data (garden, wallet, moods, notifications)
+                const dataRes = await fetch(`${API_URL}/user/data/${user.uid}`);
+                const data = await dataRes.json();
+
+                if (data.garden) setGarden(data.garden);
+                if (data.wallet) setWallet(data.wallet);
+                setMoods(data.moods || []);
+                setNotifications(data.notifications || []);
+
+                // 2. Load Tasks
+                const tasksRes = await fetch(`${API_URL}/tasks/${user.uid}`);
+                const tasksData = await tasksRes.json();
+                setTasks(tasksData.tasks || []);
+
+                // 3. Load Fears
+                const fearsRes = await fetch(`${API_URL}/fears/${user.uid}`);
+                const fearsData = await fearsRes.json();
+                setFears(fearsData.fears || []);
+
+            } catch (err) {
+                console.error("Backend load failed, falling back to localStorage:", err);
+                const savedData = localStorage.getItem(`aura-data-${user.uid}`);
+                if (savedData) {
+                    const parsed = JSON.parse(savedData);
+                    setGarden(parsed.garden || createInitialGarden());
+                    setWallet(parsed.wallet || createInitialWallet());
+                    setTasks(parsed.tasks || []);
+                    setMoods(parsed.moods || []);
+                    setFears(parsed.fears || []);
+                }
+            }
+        };
+
+        loadData();
     }, [user]);
 
-    // Save data on change
+    // Save data to backend
     useEffect(() => {
         if (!user) return;
-        const data = { garden, wallet, tasks, moods, fears, reviews };
-        localStorage.setItem(`aura-data-${user.uid}`, JSON.stringify(data));
-    }, [user, garden, wallet, tasks, moods, fears, reviews]);
+
+        const saveData = async () => {
+            try {
+                // Save general user data
+                await fetch(`${API_URL}/user/data?username=${user.uid}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ garden, wallet, moods, notifications })
+                });
+
+                // Locally save to localStorage as backup
+                const data = { garden, wallet, tasks, moods, fears, reviews };
+                localStorage.setItem(`aura-data-${user.uid}`, JSON.stringify(data));
+            } catch (err) {
+                console.error("Auto-save failed:", err);
+            }
+        };
+
+        const timeoutId = setTimeout(saveData, 1000); // Debounced save
+        return () => clearTimeout(timeoutId);
+    }, [user, garden, wallet, moods, notifications]);
+
+    // Independent task/fear saves for reliability
+    const syncItem = async (type, item) => {
+        if (!user) return;
+        try {
+            await fetch(`${API_URL}/${type}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ...item, user_id: user.uid })
+            });
+        } catch (err) {
+            console.error(`Syncing ${type} failed:`, err);
+        }
+    };
 
     // ======= TASK MANAGEMENT =======
     const addTask = (task) => {
@@ -65,11 +126,17 @@ export function AppProvider({ children }) {
             ...task,
         };
         setTasks(prev => [newTask, ...prev]);
+        syncItem('tasks', newTask);
         return newTask;
     };
 
     const updateTask = (taskId, updates) => {
-        setTasks(prev => prev.map(t => t.id === taskId ? { ...t, ...updates } : t));
+        setTasks(prev => {
+            const updated = prev.map(t => t.id === taskId ? { ...t, ...updates } : t);
+            const task = updated.find(t => t.id === taskId);
+            if (task) syncItem('tasks', task);
+            return updated;
+        });
     };
 
     const completeTask = (taskId) => {
@@ -216,11 +283,17 @@ export function AppProvider({ children }) {
         };
         setFears(prev => [fear, ...prev]);
         setGarden(prev => ({ ...prev, weeds: { ...prev.weeds, active: prev.weeds.active + 1 } }));
+        syncItem('fears', fear);
         return fear;
     };
 
     const conquerFear = (fearId) => {
-        setFears(prev => prev.map(f => f.id === fearId ? { ...f, status: 'conquered', conqueredAt: new Date().toISOString() } : f));
+        setFears(prev => {
+            const updated = prev.map(f => f.id === fearId ? { ...f, status: 'conquered', conqueredAt: new Date().toISOString() } : f);
+            const fear = updated.find(f => f.id === fearId);
+            if (fear) syncItem('fears', fear);
+            return updated;
+        });
         setGarden(prev => ({
             ...prev,
             weeds: {

@@ -2,20 +2,13 @@ import { createContext, useContext, useState, useEffect } from 'react';
 
 const AuthContext = createContext();
 
-// Demo user data for MVP (Firebase integration ready)
-const DEMO_USERS = {
-    'demo@aura.app': {
-        uid: 'demo-user-001',
-        email: 'demo@aura.app',
-        displayName: 'Alex Green',
-        photoURL: null,
-        password: 'demo123',
-    },
-};
+// API configuration for backend integration (FastAPI)
 
 export function AuthProvider({ children }) {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+
+    const API_URL = 'http://localhost:8000/api';
 
     useEffect(() => {
         const savedUser = localStorage.getItem('aura-user');
@@ -26,26 +19,59 @@ export function AuthProvider({ children }) {
     }, []);
 
     const login = async (email, password) => {
-        // Demo mode login
-        const demoUser = DEMO_USERS[email];
-        if (demoUser && demoUser.password === password) {
-            const userData = { uid: demoUser.uid, email: demoUser.email, displayName: demoUser.displayName };
+        try {
+            const response = await fetch(`${API_URL}/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    username: email, // Use email as username
+                    password
+                }),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.detail || 'Login failed');
+            }
+
+            const data = await response.json();
+            const userData = data.user;
             setUser(userData);
             localStorage.setItem('aura-user', JSON.stringify(userData));
             return userData;
+        } catch (error) {
+            console.error('Login error:', error);
+            throw error;
         }
-        throw new Error('Invalid credentials. Try demo@aura.app / demo123');
     };
 
     const register = async (email, password, displayName) => {
-        const userData = {
-            uid: 'user-' + Date.now(),
-            email,
-            displayName: displayName || email.split('@')[0],
-        };
-        setUser(userData);
-        localStorage.setItem('aura-user', JSON.stringify(userData));
-        return userData;
+        try {
+            const response = await fetch(`${API_URL}/register`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    username: email, // Use email as username
+                    email,
+                    password,
+                    display_name: displayName
+                }),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.detail || 'Registration failed');
+            }
+
+            const data = await response.json();
+            const userData = data.user;
+            setUser(userData);
+            localStorage.setItem('aura-user', JSON.stringify(userData));
+            return userData;
+        } catch (error) {
+            console.error('Registration error:', error);
+            throw error;
+        }
     };
 
     const logout = () => {
