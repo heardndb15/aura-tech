@@ -20,11 +20,12 @@ export default function BottomNav({ activeTab, setActiveTab }) {
                     const isActive = activeTab === item.id;
                     const Icon = item.icon;
                     return (
-                        <button
+                        <motion.button
                             key={item.id}
                             id={`nav-${item.id}`}
                             onClick={() => setActiveTab(item.id)}
-                            className="flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl transition-all duration-200 relative"
+                            whileTap={{ scale: 0.9 }}
+                            className="flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl transition-all duration-200 relative grow"
                             style={{ color: isActive ? 'var(--stem-primary)' : 'var(--aura-text-muted)' }}
                         >
                             {isActive && (
@@ -35,9 +36,13 @@ export default function BottomNav({ activeTab, setActiveTab }) {
                                     transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                                 />
                             )}
-                            <Icon className="w-5 h-5" strokeWidth={isActive ? 2.5 : 1.8} />
-                            <span className="text-[10px] font-medium">{item.label}</span>
-                        </button>
+                            <motion.div
+                                animate={{ scale: isActive ? 1.2 : 1 }}
+                            >
+                                <Icon className="w-5 h-5" strokeWidth={isActive ? 2.5 : 1.8} />
+                            </motion.div>
+                            <span className="text-[9px] font-black uppercase tracking-tighter">{item.label}</span>
+                        </motion.button>
                     );
                 })}
             </div>

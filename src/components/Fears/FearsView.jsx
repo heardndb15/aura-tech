@@ -27,10 +27,10 @@ export default function FearsView() {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setShowAdd(true)}
-                    className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-white text-sm font-semibold"
+                    className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-white text-sm font-black btn-game shadow-lg"
                     style={{ background: 'var(--weed-primary)' }}
                 >
-                    <Plus className="w-4 h-4" /> Add Fear
+                    <Plus className="w-5 h-5" /> Slayer Mode
                 </motion.button>
             </div>
             <p className="text-xs mb-5" style={{ color: 'var(--aura-text-muted)' }}>
@@ -74,11 +74,9 @@ export default function FearsView() {
                                     animate={{ opacity: 1, x: 0 }}
                                     exit={{ opacity: 0, x: 20 }}
                                     transition={{ delay: i * 0.05 }}
-                                    className="rounded-xl p-4"
+                                    className="rounded-2xl p-4 transition-all duration-200 card-game"
                                     style={{
                                         background: 'var(--aura-surface)',
-                                        border: '1px solid var(--aura-border)',
-                                        boxShadow: 'var(--shadow-sm)',
                                     }}
                                 >
                                     <div className="flex items-start gap-3">
@@ -102,10 +100,10 @@ export default function FearsView() {
                                                 whileHover={{ scale: 1.05 }}
                                                 whileTap={{ scale: 0.95 }}
                                                 onClick={() => conquerFear(fear.id)}
-                                                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white"
+                                                className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-black text-white btn-game"
                                                 style={{ background: 'var(--stem-primary)' }}
                                             >
-                                                <Swords className="w-3 h-3" /> I conquered this!
+                                                <Swords className="w-4 h-4" /> Vanquish!
                                             </motion.button>
                                         </div>
                                     </div>
@@ -208,10 +206,10 @@ export default function FearsView() {
                                 id="fear-add"
                                 onClick={handleAddFear}
                                 disabled={!fearText.trim()}
-                                className="w-full py-3 rounded-xl text-white text-sm font-semibold transition-all duration-200 disabled:opacity-40"
+                                className="w-full py-3 rounded-xl text-white text-sm font-black transition-all duration-200 disabled:opacity-40 btn-game shadow-lg"
                                 style={{ background: 'var(--weed-primary)' }}
                             >
-                                Face This Fear 💪
+                                Start Boss Fight ⚔️
                             </button>
                         </motion.div>
                     </motion.div>

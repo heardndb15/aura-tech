@@ -54,9 +54,13 @@ export function calculateGardenHealth(garden) {
     const rootScore = Math.min(garden.roots.xp / 500, 1) * 25;
     const stemScore = Math.min(garden.stems.xp / 500, 1) * 25;
     const budScore = Math.min(garden.buds.xp / 500, 1) * 25;
+
+    // Bonuses and Penalties
     const weedPenalty = garden.weeds.active * 5;
     const weedBonus = garden.weeds.removed * 3;
-    return Math.min(100, Math.max(0, Math.floor(rootScore + stemScore + budScore + weedBonus - weedPenalty + 25)));
+    const decorBonus = (garden.decorations?.length || 0) * 2; // +2% per decoration
+
+    return Math.min(100, Math.max(0, Math.floor(rootScore + stemScore + budScore + weedBonus + decorBonus - weedPenalty + 25)));
 }
 
 /**

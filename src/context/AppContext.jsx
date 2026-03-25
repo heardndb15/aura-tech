@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useAuth } from './AuthContext';
+import { calculateReward } from '../utils/economy';
 
 const AppContext = createContext();
 
@@ -75,15 +76,18 @@ export function AppProvider({ children }) {
         const task = tasks.find(t => t.id === taskId);
         if (!task) return;
 
+        const zoneMap = { root: 'roots', stem: 'stems', bud: 'buds' };
+        const zone = zoneMap[task.category];
+        const zData = garden[zone] || { streak: 0 };
+
         const xpReward = 25;
-        const tokenReward = task.stake ? Math.floor(task.stake * 1.5) : 10;
+        // Use the utility function for reward calculation
+        const tokenReward = calculateReward(task.stake || 5, zData.streak || 0);
 
         // Update task
         updateTask(taskId, { status: 'completed', completedAt: new Date().toISOString() });
 
         // Update garden zone XP
-        const zoneMap = { root: 'roots', stem: 'stems', bud: 'buds' };
-        const zone = zoneMap[task.category];
         if (zone) {
             setGarden(prev => {
                 const z = prev[zone];
@@ -95,7 +99,7 @@ export function AppProvider({ children }) {
                         ...z,
                         xp: newXp,
                         level: newLevel,
-                        streak: z.streak + 1,
+                        streak: (z.streak || 0) + 1,
                         totalTasks: (z.totalTasks || 0) + 1,
                     },
                 };
@@ -103,26 +107,24 @@ export function AppProvider({ children }) {
         }
 
         // Update wallet
-        if (task.stake) {
-            setWallet(prev => ({
-                ...prev,
-                balance: prev.balance + tokenReward,
-                totalEarned: prev.totalEarned + tokenReward,
-                history: [
-                    {
-                        id: 'tx-' + Date.now(),
-                        type: 'reward',
-                        amount: tokenReward,
-                        description: `Task completed: ${task.title}`,
-                        date: new Date().toISOString(),
-                    },
-                    ...prev.history,
-                ],
-            }));
-        }
+        setWallet(prev => ({
+            ...prev,
+            balance: prev.balance + tokenReward,
+            totalEarned: prev.totalEarned + tokenReward,
+            history: [
+                {
+                    id: 'tx-' + Date.now(),
+                    type: 'reward',
+                    amount: tokenReward,
+                    description: `Task completed: ${task.title}`,
+                    date: new Date().toISOString(),
+                },
+                ...prev.history,
+            ],
+        }));
 
         // Notify
-        addNotification(`🌿 Task completed! +${xpReward}XP +${tokenReward} tokens`);
+        addNotification(`🌿 Task completed! +${xpReward}XP +${tokenReward} gems`);
     };
 
     const failTask = (taskId) => {
