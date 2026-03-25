@@ -43,10 +43,20 @@ export function AppProvider({ children }) {
                 const dataRes = await fetch(`${API_URL}/user/data/${user.uid}`);
                 const data = await dataRes.json();
 
-                if (data.garden) setGarden(data.garden);
-                if (data.wallet) setWallet(data.wallet);
-                setMoods(data.moods || []);
-                setNotifications(data.notifications || []);
+                if (data.garden && typeof data.garden === 'object' && Object.keys(data.garden).length > 0) {
+                    setGarden(data.garden);
+                } else {
+                    console.log('Using default garden state');
+                }
+
+                if (data.wallet && typeof data.wallet === 'object' && 'balance' in data.wallet) {
+                    setWallet(data.wallet);
+                } else {
+                    console.log('Using default wallet state');
+                }
+
+                setMoods(Array.isArray(data.moods) ? data.moods : []);
+                setNotifications(Array.isArray(data.notifications) ? data.notifications : []);
 
                 // 2. Load Tasks
                 const tasksRes = await fetch(`${API_URL}/tasks/${user.uid}`);

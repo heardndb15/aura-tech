@@ -15,15 +15,21 @@ export default function AuthPage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log('Form Submit Clicked. isLogin:', isLogin, 'email:', email, 'name:', name);
         setError('');
         setLoading(true);
         try {
             if (isLogin) {
-                await login(email, password);
+                console.log('Calling login...');
+                const res = await login(email, password);
+                console.log('Login result:', res);
             } else {
-                await register(email, password, name);
+                console.log('Calling register...');
+                const res = await register(email, password, name);
+                console.log('Register result:', res);
             }
         } catch (err) {
+            console.error('Submit execution error:', err);
             setError(err.message);
         } finally {
             setLoading(false);

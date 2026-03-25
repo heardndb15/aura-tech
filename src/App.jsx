@@ -24,6 +24,8 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('garden');
   const [showAuth, setShowAuth] = useState(false);
 
+  console.log('App Rendering. User:', user, 'Loading:', loading);
+
   // Loading state
   if (loading) {
     return (
@@ -42,6 +44,7 @@ export default function App() {
 
   // Auth/Landing screen
   if (!user) {
+    console.log('No user detected, showing Auth/Landing');
     return (
       <AnimatePresence mode="wait">
         {!showAuth ? (

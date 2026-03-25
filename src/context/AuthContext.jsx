@@ -12,8 +12,13 @@ export function AuthProvider({ children }) {
 
     useEffect(() => {
         const savedUser = localStorage.getItem('aura-user');
-        if (savedUser) {
-            setUser(JSON.parse(savedUser));
+        console.log('AuthContext: Loading saved user:', savedUser);
+        if (savedUser && savedUser !== 'undefined') {
+            try {
+                setUser(JSON.parse(savedUser));
+            } catch (e) {
+                console.error('Failed to parse saved user', e);
+            }
         }
         setLoading(false);
     }, []);

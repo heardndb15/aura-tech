@@ -180,15 +180,18 @@ export default function Island({ garden }) {
 
             {/* Island Plots */}
             <div className="absolute inset-0 z-10">
-                {zones.map((zone) => (
-                    <IslandPlot
-                        key={zone.key}
-                        zone={zone}
-                        data={garden[zone.key]}
-                        active={hoveredZone === zone.key}
-                        onHover={setHoveredZone}
-                    />
-                ))}
+                {zones.map((zone) => {
+                    const zoneData = garden?.[zone.key] || { level: 1, xp: 0 };
+                    return (
+                        <IslandPlot
+                            key={zone.key}
+                            zone={zone}
+                            data={zoneData}
+                            active={hoveredZone === zone.key}
+                            onHover={setHoveredZone}
+                        />
+                    );
+                })}
             </div>
 
             {/* Clouds */}
