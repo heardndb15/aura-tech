@@ -8,6 +8,7 @@ import TasksView from './components/Tasks/TasksView';
 import FearsView from './components/Fears/FearsView';
 import ReviewView from './components/Review/ReviewView';
 import ProfileView from './components/Profile/ProfileView';
+import LandingPage from './components/Landing/LandingPage';
 import { AnimatePresence, motion } from 'framer-motion';
 
 const PAGES = {
@@ -21,6 +22,7 @@ const PAGES = {
 export default function App() {
   const { user, loading } = useAuth();
   const [activeTab, setActiveTab] = useState('garden');
+  const [showAuth, setShowAuth] = useState(false);
 
   // Loading state
   if (loading) {
@@ -38,9 +40,39 @@ export default function App() {
     );
   }
 
-  // Auth screen
+  // Auth/Landing screen
   if (!user) {
-    return <AuthPage />;
+    return (
+      <AnimatePresence mode="wait">
+        {!showAuth ? (
+          <motion.div
+            key="landing"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <LandingPage onStart={() => setShowAuth(true)} />
+          </motion.div>
+        ) : (
+          <motion.div
+            key="auth"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 1.05 }}
+            transition={{ type: 'spring', damping: 20 }}
+          >
+            <AuthPage />
+            {/* Back button to landing */}
+            <button
+              onClick={() => setShowAuth(false)}
+              className="fixed top-6 left-6 z-[60] text-white/40 hover:text-white transition-colors flex items-center gap-2 text-xs font-black uppercase tracking-widest"
+            >
+              ← Назад
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    );
   }
 
   // Main app
