@@ -8,8 +8,11 @@ export function AuthProvider({ children }) {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000/api';
-
+    let API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000/api';
+    if (!API_URL.endsWith('/api') && !API_URL.includes('/api')) {
+        API_URL = `${API_URL.replace(/\/+$/, '')}/api`;
+    }
+    API_URL = API_URL.replace(/\/+$/, ''); // Remove trailing slashes
     useEffect(() => {
         const savedUser = localStorage.getItem('aura-user');
         console.log('AuthContext: Loading saved user:', savedUser);
