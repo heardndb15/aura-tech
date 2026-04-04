@@ -31,7 +31,11 @@ export function AppProvider({ children }) {
     const [reviews, setReviews] = useState([]); // peer review queue
     const [notifications, setNotifications] = useState([]);
 
-    let API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000/api';
+    let API_URL = import.meta.env.VITE_API_URL;
+    if (!API_URL) {
+        const host = typeof window !== 'undefined' ? window.location.hostname : '127.0.0.1';
+        API_URL = `http://${host}:8000/api`;
+    }
     if (!API_URL.endsWith('/api') && !API_URL.includes('/api')) {
         API_URL = `${API_URL.replace(/\/+$/, '')}/api`;
     }
