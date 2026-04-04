@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 export default function Header() {
     const { theme, toggleTheme } = useTheme();
     const { user, logout } = useAuth();
-    const { notifications, wallet } = useApp();
+    const { notifications, wallet, garden } = useApp();
     const [showNotifs, setShowNotifs] = useState(false);
     const unread = notifications.filter(n => !n.read).length;
 
