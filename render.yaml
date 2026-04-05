@@ -1,5 +1,5 @@
-# Blueprint Render: Web Service (API) + Static Site (Vite).
-# После первого деплоя API скопируйте его URL и задайте VITE_API_URL для фронта, затем пересоберите static site.
+# Blueprint Render: Web Service (API) + статический фронт (Vite).
+# Статика — это тоже type: web + runtime: static (поле staticSites в спеке больше не используется).
 # https://render.com/docs/blueprint-spec
 
 services:
@@ -12,16 +12,13 @@ services:
     envVars:
       - key: CORS_ORIGINS
         sync: false
-      # Пример после появления URL фронта на Render:
-      # CORS_ORIGINS=https://aura-frontend.onrender.com
 
-staticSites:
-  - name: aura-frontend
+  - type: web
+    name: aura-frontend
+    runtime: static
     rootDir: .
     buildCommand: npm install && npm run build
-    staticPublishPath: dist
+    staticPublishPath: ./dist
     envVars:
       - key: VITE_API_URL
         sync: false
-      # Пример (без завершающего слэша, /api добавится в коде при необходимости):
-      # VITE_API_URL=https://aura-backend.onrender.com/api

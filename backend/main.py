@@ -7,10 +7,13 @@ import aiosqlite
 import hashlib
 import time
 import os
+import logging
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 
 load_dotenv()
+
+logger = logging.getLogger(__name__)
 
 app = FastAPI(title="Aura Garden Backend")
 
@@ -23,15 +26,20 @@ _default_origins = [
     "https://aura-tech-five.vercel.app",
 ]
 origins = list(_default_origins)
+# Render / .env: без кавычек в значении; если вставили "https://..." — снимем обрамление
 for _o in os.environ.get("CORS_ORIGINS", "").split(","):
-    _o = _o.strip().rstrip("/")
+    logger.info(f"CORS_ORIGINS: {_o}")
+    _o = _o.strip().strip('"').strip("'").rstrip("/")
     if _o and _o not in origins:
         origins.append(_o)
 
+# Regex: локальные хосты + любой поддомен *.onrender.com (HTTPS), чтобы фронт на Render проходил CORS без ручного CORS_ORIGINS
+_cors_local = r"https?://(localhost|127\.0\.0\.1|192\.168\.\d+\.\d+|10\.\d+\.\d+\.\d+)(:\d+)?"
+_cors_render = r"https://[a-z0-9][a-z0-9.-]*\.onrender\.com"
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
-    allow_origin_regex=r"https?://(localhost|127\.0\.0\.1|192\.168\.\d+\.\d+|10\.\d+\.\d+\.\d+)(:\d+)?",
+    allow_origin_regex=rf"{_cors_local}|{_cors_render}$",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
