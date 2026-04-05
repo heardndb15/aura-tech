@@ -61,13 +61,12 @@ export default function GardenView({ setActiveTab }) {
             <motion.div
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="relative overflow-hidden rounded-3xl p-5 sm:p-6"
+                className="relative overflow-hidden rounded-3xl p-5 sm:p-6 w-full"
                 style={{
                     background: 'var(--accent-gradient)',
                     minHeight: '420px',
                     display: 'flex',
                     flexDirection: 'column',
-                    alignItems: 'center',
                     justifyContent: 'center',
                     boxShadow: 'var(--shadow-glow)',
                 }}

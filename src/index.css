@@ -74,6 +74,7 @@
 .aura-view {
   display: flex;
   flex-direction: column;
+  width: 100%;
   row-gap: var(--aura-space-6);
   padding-bottom: var(--aura-space-2);
 }
@@ -135,11 +136,18 @@ body {
   background-color: var(--aura-bg);
   color: var(--aura-text);
   line-height: 1.5;
+  width: 100%;
+  min-height: 100dvh;
   transition:
     background-color var(--transition-base),
     color var(--transition-base);
   min-height: 100dvh;
   overflow-x: hidden;
+}
+
+#root {
+  width: 100%;
+  min-height: 100dvh;
 }
 
 h1,

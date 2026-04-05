@@ -257,7 +257,7 @@ export default function LandingPage({ onStart }) {
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
                     >
-                        <h2 className="text-5xl md:text-7xl font-black italic italic mb-8 uppercase tracking-tighter" style={{ fontFamily: 'Outfit' }}>SLAYER MODE</h2>
+                        <h2 className="text-5xl md:text-7xl font-black italic mb-8 uppercase tracking-tighter" style={{ fontFamily: 'Outfit' }}>SLAYER MODE</h2>
                         <p className="text-xl text-white/60 mb-12 max-w-2xl mx-auto italic">Путь к гармонии лежит через победу над тенями внутри себя. Сделай первый шаг навстречу смелости.</p>
                         <div className="flex flex-wrap items-center justify-center gap-6">
                             <div className="px-8 py-4 rounded-2xl bg-purple-500/20 border border-purple-500/30 text-purple-300 font-black italic">
@@ -308,7 +308,7 @@ export default function LandingPage({ onStart }) {
 
             {/* FOOTER */}
             <footer className="py-12 px-6 border-t border-white/5 opacity-40">
-                <div className="container mx-auto flex flex-col md:row items-center justify-between gap-8">
+                <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
                     <div className="flex items-center gap-2">
                         <div className="w-8 h-8 rounded-lg bg-emerald-500" />
                         <span className="text-xl font-black italic" style={{ fontFamily: 'Outfit' }}>AURA</span>
