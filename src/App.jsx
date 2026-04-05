@@ -67,8 +67,9 @@ export default function App() {
             <AuthPage />
             {/* Back button to landing */}
             <button
+              type="button"
               onClick={() => setShowAuth(false)}
-              className="fixed top-6 left-6 z-[60] text-white/40 hover:text-white transition-colors flex items-center gap-2 text-xs font-black uppercase tracking-widest"
+              className="fixed top-[max(1.5rem,env(safe-area-inset-top))] left-[max(1.5rem,env(safe-area-inset-left))] z-[60] text-white/40 hover:text-white transition-colors inline-flex items-center gap-2 min-h-11 px-3 rounded-xl text-xs font-black uppercase tracking-wide"
             >
               ← Назад
             </button>
@@ -89,7 +90,7 @@ export default function App() {
 
       <Header />
 
-      <main className="relative z-10 max-w-5xl mx-auto px-4 pt-4 pb-20">
+      <main className="relative z-10 max-w-5xl mx-auto px-4 sm:px-5 pt-5 sm:pt-6 pb-[calc(5.25rem+env(safe-area-inset-bottom,0px))]">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}

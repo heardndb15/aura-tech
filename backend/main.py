@@ -15,13 +15,18 @@ load_dotenv()
 app = FastAPI(title="Aura Garden Backend")
 
 # --- CORS ---
-origins = [
+# Локальная разработка + доп. origin из Render / Vercel (через запятую в CORS_ORIGINS)
+_default_origins = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
     "http://localhost:3000",
-    "https://aura-tech-five.vercel.app"
+    "https://aura-tech-five.vercel.app",
 ]
-
+origins = list(_default_origins)
+for _o in os.environ.get("CORS_ORIGINS", "").split(","):
+    _o = _o.strip().rstrip("/")
+    if _o and _o not in origins:
+        origins.append(_o)
 
 app.add_middleware(
     CORSMiddleware,

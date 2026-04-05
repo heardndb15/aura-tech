@@ -43,7 +43,7 @@ export default function AuthPage() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden"
+        <div className="min-h-screen flex items-center justify-center p-4 sm:p-6 relative overflow-hidden"
             style={{ background: 'var(--aura-bg)' }}>
 
             {/* Animated background orbs */}
@@ -60,7 +60,7 @@ export default function AuthPage() {
                 className="relative z-10 w-full max-w-md"
             >
                 {/* Logo */}
-                <div className="text-center mb-8">
+                <div className="text-center mb-6 sm:mb-8">
                     <motion.div
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
@@ -79,15 +79,16 @@ export default function AuthPage() {
                 </div>
 
                 {/* Card */}
-                <div className="glass rounded-2xl p-6" style={{ boxShadow: 'var(--shadow-lg)' }}>
+                <div className="glass rounded-2xl p-5 sm:p-6" style={{ boxShadow: 'var(--shadow-lg)' }}>
                     {/* Toggle */}
-                    <div className="flex rounded-xl p-1 mb-6"
+                    <div className="flex rounded-xl p-1 mb-5 sm:mb-6"
                         style={{ background: 'var(--aura-bg-secondary)' }}>
                         {['Login', 'Sign Up'].map((label, i) => (
                             <button
+                                type="button"
                                 key={label}
                                 onClick={() => { setIsLogin(i === 0); setError(''); }}
-                                className="flex-1 py-2.5 rounded-lg text-sm font-medium transition-all duration-200"
+                                className="flex-1 min-h-11 py-2.5 rounded-lg text-sm font-medium transition-all duration-200"
                                 style={{
                                     background: (i === 0 ? isLogin : !isLogin) ? 'var(--aura-surface)' : 'transparent',
                                     color: (i === 0 ? isLogin : !isLogin) ? 'var(--aura-text)' : 'var(--aura-text-muted)',
@@ -99,7 +100,7 @@ export default function AuthPage() {
                         ))}
                     </div>
 
-                    <form onSubmit={handleSubmit} className="space-y-4">
+                    <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
                         <AnimatePresence mode="wait">
                             {!isLogin && (
                                 <motion.div
@@ -118,7 +119,7 @@ export default function AuthPage() {
                                             placeholder="Your name"
                                             value={name}
                                             onChange={(e) => setName(e.target.value)}
-                                            className="w-full pl-10 pr-4 py-3 rounded-xl text-sm outline-none transition-all duration-200"
+                                            className="w-full min-h-11 pl-10 pr-4 py-3 rounded-xl text-sm outline-none transition-all duration-200"
                                             style={{
                                                 background: 'var(--aura-bg-secondary)',
                                                 border: '1px solid var(--aura-border)',
@@ -140,7 +141,7 @@ export default function AuthPage() {
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
-                                className="w-full pl-10 pr-4 py-3 rounded-xl text-sm outline-none transition-all duration-200"
+                                className="w-full min-h-11 pl-10 pr-4 py-3 rounded-xl text-sm outline-none transition-all duration-200"
                                 style={{
                                     background: 'var(--aura-bg-secondary)',
                                     border: '1px solid var(--aura-border)',
@@ -159,7 +160,7 @@ export default function AuthPage() {
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
-                                className="w-full pl-10 pr-10 py-3 rounded-xl text-sm outline-none transition-all duration-200"
+                                className="w-full min-h-11 pl-10 pr-12 py-3 rounded-xl text-sm outline-none transition-all duration-200"
                                 style={{
                                     background: 'var(--aura-bg-secondary)',
                                     border: '1px solid var(--aura-border)',
@@ -169,10 +170,11 @@ export default function AuthPage() {
                             <button
                                 type="button"
                                 onClick={() => setShowPassword(!showPassword)}
-                                className="absolute right-3 top-1/2 -translate-y-1/2"
+                                className="absolute right-1 top-1/2 -translate-y-1/2 aura-icon-btn rounded-lg"
                                 style={{ color: 'var(--aura-text-muted)' }}
+                                aria-label={showPassword ? 'Hide password' : 'Show password'}
                             >
-                                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                                {showPassword ? <EyeOff className="w-4 h-4 shrink-0" aria-hidden /> : <Eye className="w-4 h-4 shrink-0" aria-hidden />}
                             </button>
                         </div>
 
@@ -191,7 +193,7 @@ export default function AuthPage() {
                             id="auth-submit"
                             type="submit"
                             disabled={loading}
-                            className="w-full py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-center gap-2 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50"
+                            className="w-full min-h-11 py-3 rounded-xl text-white font-semibold text-sm flex items-center justify-center gap-2 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50"
                             style={{ background: 'var(--accent-gradient)', boxShadow: 'var(--shadow-glow)' }}
                         >
                             {loading ? (
@@ -208,8 +210,9 @@ export default function AuthPage() {
                     {/* Demo login hint */}
                     <div className="mt-4 text-center">
                         <button
+                            type="button"
                             onClick={fillDemo}
-                            className="text-xs transition-colors duration-200 hover:underline"
+                            className="text-xs min-h-11 px-2 inline-flex items-center justify-center transition-colors duration-200 hover:underline rounded-lg"
                             style={{ color: 'var(--stem-primary)' }}
                         >
                             Try demo account →
@@ -218,7 +221,7 @@ export default function AuthPage() {
                 </div>
 
                 {/* Bottom text */}
-                <p className="text-center text-xs mt-6" style={{ color: 'var(--aura-text-muted)' }}>
+                <p className="text-center text-xs mt-5 sm:mt-6 px-2 leading-relaxed" style={{ color: 'var(--aura-text-muted)' }}>
                     By continuing, you agree to Aura's Terms & Privacy Policy
                 </p>
             </motion.div>

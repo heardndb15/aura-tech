@@ -26,15 +26,15 @@ export default function ProfileView() {
     };
 
     return (
-        <div className="pb-4 stagger-children">
+        <div className="aura-view stagger-children">
             {/* Character Header */}
-            <div className="relative overflow-hidden rounded-3xl p-6 mb-8 text-white min-h-[160px] flex items-center"
+            <div className="relative overflow-hidden rounded-3xl p-5 sm:p-6 text-white min-h-[160px] flex items-center"
                 style={{ background: 'var(--accent-gradient)', boxShadow: 'var(--shadow-glow)' }}>
                 <div className="absolute inset-0 opacity-10 pointer-events-none">
                     <div className="absolute top-0 right-0 text-9xl">🌿</div>
                 </div>
 
-                <div className="relative z-10 flex items-center gap-6">
+                <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-6">
                     <motion.div
                         initial={{ scale: 0, rotate: -20 }}
                         animate={{ scale: 1, rotate: 0 }}
@@ -49,7 +49,7 @@ export default function ProfileView() {
                             <h2 className="text-3xl font-black italic tracking-tight" style={{ fontFamily: 'Outfit' }}>
                                 {user?.displayName || 'Legendary Gardener'}
                             </h2>
-                            <div className="bg-white/20 px-2 py-0.5 rounded-md text-[10px] font-black uppercase tracking-widest border border-white/30 truncate">
+                            <div className="bg-white/20 px-2 py-0.5 rounded-md aura-micro font-black uppercase tracking-widest border border-white/30 truncate">
                                 RANK: {health > 80 ? 'Nature Spirit' : health > 50 ? 'Master' : 'Novice'}
                             </div>
                         </div>
@@ -71,7 +71,7 @@ export default function ProfileView() {
             </div>
 
             {/* Stats Grid */}
-            <div className="grid grid-cols-2 gap-4 mb-8">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4">
                 {[
                     { label: 'Victory Rate', value: `${stats.successRate}%`, icon: TrendingUp, color: 'var(--bud-primary)', bg: 'var(--bud-light)' },
                     { label: 'Fears Vanquished', value: stats.fearsConquered, icon: Flame, color: 'var(--weed-primary)', bg: 'var(--weed-light)' },
@@ -85,19 +85,19 @@ export default function ProfileView() {
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: i * 0.1 }}
-                            className="rounded-2xl p-4 card-game"
+                            className="rounded-2xl p-4 sm:p-5 card-game"
                             style={{
                                 background: 'var(--aura-surface)',
                             }}
                         >
-                            <div className="flex items-center gap-3">
+                            <div className="flex items-center gap-3 sm:gap-4">
                                 <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
                                     style={{ background: stat.bg }}>
                                     <Icon className="w-5 h-5" style={{ color: stat.color }} />
                                 </div>
                                 <div>
                                     <p className="text-2xl font-black" style={{ color: 'var(--aura-text)' }}>{stat.value}</p>
-                                    <p className="text-[10px] font-bold uppercase tracking-wider opacity-60">{stat.label}</p>
+                                    <p className="aura-micro font-bold uppercase tracking-wider opacity-60">{stat.label}</p>
                                 </div>
                             </div>
                         </motion.div>
@@ -106,7 +106,7 @@ export default function ProfileView() {
             </div>
 
             {/* Wallet Section */}
-            <div className="rounded-3xl p-6 mb-8 relative overflow-hidden" style={{
+            <div className="rounded-3xl p-5 sm:p-6 relative overflow-hidden" style={{
                 background: 'linear-gradient(135deg, #1a2e05 0%, #2e5038 100%)',
                 boxShadow: 'var(--shadow-lg)',
             }}>
@@ -122,7 +122,7 @@ export default function ProfileView() {
                             </div>
                             <span className="text-sm text-white/70 font-black uppercase tracking-widest">Vault Balance</span>
                         </div>
-                        <div className="bg-white/10 px-3 py-1 rounded-full text-[10px] font-bold text-white border border-white/10">
+                        <div className="bg-white/10 px-3 py-1 rounded-full aura-micro font-bold text-white border border-white/10">
                             GEM ECONOMY
                         </div>
                     </div>
@@ -131,7 +131,7 @@ export default function ProfileView() {
                         {formatTokens(wallet.balance)} <span className="text-xl opacity-50 underline decoration-yellow-400">GEMS</span>
                     </p>
 
-                    <div className="grid grid-cols-3 gap-3">
+                    <div className="grid grid-cols-3 gap-2 sm:gap-3">
                         {[
                             { label: 'LOOTED', value: wallet.totalEarned, icon: ArrowUpRight, color: '#4ade80' },
                             { label: 'STAKED', value: wallet.totalStaked, icon: Target, color: '#fbbf24' },
@@ -139,10 +139,10 @@ export default function ProfileView() {
                         ].map(item => {
                             const Icon = item.icon;
                             return (
-                                <div key={item.label} className="rounded-xl p-3 bg-white/5 border border-white/5 backdrop-blur-sm">
+                                <div key={item.label} className="rounded-xl p-3 sm:p-4 bg-white/5 border border-white/5 backdrop-blur-sm">
                                     <div className="flex items-center gap-1.5 mb-1 opacity-60">
                                         <Icon className="w-3 h-3" style={{ color: item.color }} />
-                                        <span className="text-[9px] font-black text-white uppercase tracking-tighter">{item.label}</span>
+                                        <span className="aura-micro font-black text-white uppercase tracking-tighter">{item.label}</span>
                                     </div>
                                     <p className="text-lg font-black text-white">{item.value}</p>
                                 </div>
@@ -153,10 +153,11 @@ export default function ProfileView() {
             </div>
 
             {/* Transaction History */}
-            <h3 className="text-sm font-semibold mb-3" style={{ color: 'var(--aura-text-secondary)', fontFamily: 'Outfit' }}>
+            <div className="aura-subsection">
+            <h3 className="text-sm font-semibold" style={{ color: 'var(--aura-text-secondary)', fontFamily: 'Outfit' }}>
                 💰 Transaction History
             </h3>
-            <div className="space-y-2">
+            <div className="space-y-3">
                 {wallet.history.length === 0 ? (
                     <div className="text-center py-8">
                         <p className="text-xs" style={{ color: 'var(--aura-text-muted)' }}>
@@ -167,7 +168,7 @@ export default function ProfileView() {
                     wallet.history.slice(0, 10).map((tx) => (
                         <div
                             key={tx.id}
-                            className="flex items-center gap-3 rounded-xl p-3"
+                            className="flex items-center gap-3 sm:gap-4 rounded-xl p-3 sm:p-4"
                             style={{
                                 background: 'var(--aura-surface)',
                                 border: '1px solid var(--aura-border)',
@@ -189,7 +190,7 @@ export default function ProfileView() {
                                 <p className="text-xs font-medium truncate" style={{ color: 'var(--aura-text)' }}>
                                     {tx.description}
                                 </p>
-                                <p className="text-[10px]" style={{ color: 'var(--aura-text-muted)' }}>
+                                <p className="aura-micro" style={{ color: 'var(--aura-text-muted)' }}>
                                     {new Date(tx.date).toLocaleDateString()}
                                 </p>
                             </div>
@@ -201,6 +202,7 @@ export default function ProfileView() {
                         </div>
                     ))
                 )}
+            </div>
             </div>
         </div>
     );

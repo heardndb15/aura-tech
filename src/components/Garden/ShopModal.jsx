@@ -27,7 +27,7 @@ export default function ShopModal({ onClose }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+            className="fixed inset-0 z-[60] flex items-center justify-center p-4 sm:p-5 bg-black/60 backdrop-blur-sm"
             onClick={onClose}
         >
             <motion.div
@@ -38,29 +38,29 @@ export default function ShopModal({ onClose }) {
                 onClick={(e) => e.stopPropagation()}
             >
                 {/* Header */}
-                <div className="relative p-6 text-white overflow-hidden" style={{ background: 'var(--accent-gradient)' }}>
+                <div className="relative p-5 sm:p-6 text-white overflow-hidden" style={{ background: 'var(--accent-gradient)' }}>
                     <div className="absolute top-0 right-0 opacity-10 text-8xl -rotate-12 translate-x-1/4 translate-y-1/4 select-none">💎</div>
                     <div className="relative z-10 flex items-center justify-between">
                         <div>
                             <h2 className="text-2xl font-black italic tracking-tight" style={{ fontFamily: 'Outfit' }}>EMPORIUM</h2>
-                            <p className="text-[10px] font-bold uppercase tracking-widest opacity-80">Island Decoration & Rare Artifacts</p>
+                            <p className="aura-micro font-bold uppercase tracking-widest opacity-80">Island Decoration & Rare Artifacts</p>
                         </div>
-                        <button onClick={onClose} className="p-2 rounded-full bg-white/20 hover:bg-white/30 transition-colors">
-                            <X className="w-5 h-5" />
+                        <button type="button" onClick={onClose} className="aura-icon-btn rounded-full bg-white/20 hover:bg-white/30 transition-colors shrink-0" aria-label="Close shop">
+                            <X className="w-5 h-5 shrink-0" aria-hidden />
                         </button>
                     </div>
                 </div>
 
                 {/* Balance Banner */}
-                <div className="px-6 py-3 bg-black/5 dark:bg-white/5 border-b border-black/5 dark:border-white/5 flex items-center justify-between">
-                    <span className="text-[10px] font-black uppercase opacity-60">Current Bag</span>
+                <div className="px-5 sm:px-6 py-3 sm:py-3.5 bg-black/5 dark:bg-white/5 border-b border-black/5 dark:border-white/5 flex items-center justify-between gap-3">
+                    <span className="aura-micro font-black uppercase opacity-60">Current Bag</span>
                     <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-yellow-400/20 text-yellow-600 dark:text-yellow-400 font-black text-sm border border-yellow-400/30">
                         <span className="animate-bounce">🪙</span> {wallet.balance} GEMS
                     </div>
                 </div>
 
                 {/* Items Grid */}
-                <div className="p-6 grid grid-cols-2 gap-4 max-h-[50vh] overflow-y-auto">
+                <div className="p-5 sm:p-6 grid grid-cols-2 gap-3 sm:gap-4 max-h-[50vh] overflow-y-auto">
                     {DECOR_ITEMS.map((item) => {
                         const canAfford = wallet.balance >= item.price;
                         const isOwned = (garden.decorations || []).some(d => d.id === item.id);
@@ -69,7 +69,7 @@ export default function ShopModal({ onClose }) {
                             <motion.div
                                 key={item.id}
                                 whileHover={{ y: -4 }}
-                                className={`relative p-4 rounded-2xl border-2 transition-all group overflow-hidden ${isOwned
+                                className={`relative p-3 sm:p-4 rounded-2xl border-2 transition-all group overflow-hidden ${isOwned
                                         ? 'border-emerald-500/30 bg-emerald-50/50 dark:bg-emerald-900/10'
                                         : 'border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5 hover:border-accent-gold/50'
                                     }`}
@@ -82,7 +82,7 @@ export default function ShopModal({ onClose }) {
                                         {item.emoji}
                                     </span>
                                     <h3 className="text-sm font-black tracking-tight" style={{ color: 'var(--aura-text)' }}>{item.label}</h3>
-                                    <span className="text-[10px] font-bold opacity-50 uppercase">{item.theme}</span>
+                                    <span className="aura-micro font-bold opacity-50 uppercase">{item.theme}</span>
                                 </div>
 
                                 <button
@@ -108,8 +108,8 @@ export default function ShopModal({ onClose }) {
                     })}
                 </div>
 
-                <div className="p-4 text-center">
-                    <p className="text-[10px] font-medium opacity-40">Artifacts are placed randomly on your island upon purchase.</p>
+                <div className="px-5 sm:px-6 py-4 text-center">
+                    <p className="aura-micro font-medium opacity-40">Artifacts are placed randomly on your island upon purchase.</p>
                 </div>
             </motion.div>
         </motion.div>

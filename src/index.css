@@ -50,6 +50,46 @@
   --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-spring: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Type scale (rem @ 16px root) */
+  --text-caption: 0.75rem;
+  --text-caption-lh: 1.45;
+  --text-micro: 0.6875rem;
+  --text-micro-lh: 1.35;
+  --touch-min: 2.75rem;
+  --focus-ring: 2px solid var(--stem-primary);
+  --focus-offset: 2px;
+
+  /* Spacing (8px grid) */
+  --aura-space-1: 0.25rem;
+  --aura-space-2: 0.5rem;
+  --aura-space-3: 0.75rem;
+  --aura-space-4: 1rem;
+  --aura-space-5: 1.25rem;
+  --aura-space-6: 1.5rem;
+  --aura-space-8: 2rem;
+}
+
+/* Vertical rhythm between major blocks inside a screen */
+.aura-view {
+  display: flex;
+  flex-direction: column;
+  row-gap: var(--aura-space-6);
+  padding-bottom: var(--aura-space-2);
+}
+
+@media (min-width: 640px) {
+  .aura-view {
+    row-gap: var(--aura-space-8);
+    padding-bottom: var(--aura-space-4);
+  }
+}
+
+/* Titled subsection: heading + content */
+.aura-subsection {
+  display: flex;
+  flex-direction: column;
+  row-gap: var(--aura-space-4);
 }
 
 /* ===== DARK THEME ===== */
@@ -86,12 +126,15 @@ html {
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   background-color: var(--aura-bg);
   color: var(--aura-text);
+  line-height: 1.5;
   transition:
     background-color var(--transition-base),
     color var(--transition-base);
@@ -108,6 +151,57 @@ h6 {
   font-family: 'Outfit', 'Inter', sans-serif;
   font-weight: 700;
   letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+/* Focus & touch (WCAG-friendly, keeps existing colors) */
+:where(button, [role='button'], a):focus {
+  outline: none;
+}
+
+:where(button, [role='button'], a):focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+:where(input:not([type='hidden']), textarea, select):focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+.aura-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--touch-min);
+  min-height: var(--touch-min);
+  border-radius: var(--radius-md);
+  transition:
+    color var(--transition-fast),
+    background-color var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.aura-caption {
+  font-size: var(--text-caption);
+  line-height: var(--text-caption-lh);
+}
+
+.aura-micro {
+  font-size: var(--text-micro);
+  line-height: var(--text-micro-lh);
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .animate-float,
+  .animate-pulse-glow,
+  .animate-grow-in,
+  .animate-slide-up,
+  .animate-leaf-sway,
+  .bounce {
+    animation: none !important;
+  }
 }
 
 /* ===== SCROLLBAR ===== */
@@ -271,6 +365,18 @@ h6 {
 .btn-game:active {
   transform: translateY(2px);
   border-bottom-width: 2px;
+}
+
+/* Garden zone tiles: padding here so it isn’t “eaten” by tight grid columns */
+.garden-zone-card {
+  padding: 1.25rem 1.25rem 1.125rem;
+  box-sizing: border-box;
+}
+
+@media (min-width: 640px) {
+  .garden-zone-card {
+    padding: 1.375rem 1.5rem 1.25rem;
+  }
 }
 
 .card-game {

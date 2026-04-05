@@ -93,14 +93,14 @@ export default function LandingPage({ onStart }) {
                         className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-8"
                     >
                         <Sparkles className="w-4 h-4 text-emerald-400" />
-                        <span className="text-[11px] font-black uppercase tracking-[0.2em] text-emerald-400">Геймификация саморазвития</span>
+                        <span className="aura-micro font-black uppercase tracking-[0.2em] text-emerald-400">Геймификация саморазвития</span>
                     </motion.div>
 
                     <motion.h1
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.2, duration: 1 }}
-                        className="text-6xl md:text-8xl font-black italic tracking-tighter mb-8 leading-[0.95] drop-shadow-2xl"
+                        className="text-5xl sm:text-6xl md:text-8xl font-black italic tracking-tighter mb-8 leading-[0.95] drop-shadow-2xl"
                         style={{ fontFamily: 'Outfit' }}
                     >
                         РАСТИ НАД СОБОЙ, <br />
@@ -125,13 +125,14 @@ export default function LandingPage({ onStart }) {
                         className="flex flex-col sm:flex-row items-center justify-center gap-4"
                     >
                         <button
+                            type="button"
                             onClick={onStart}
-                            className="bg-gradient-to-r from-emerald-500 to-teal-600 px-10 py-5 rounded-[24px] text-white font-black text-lg shadow-[0_0_30px_rgba(16,185,129,0.3)] hover:scale-105 active:scale-95 transition-all group flex items-center gap-3"
+                            className="bg-gradient-to-r from-emerald-500 to-teal-600 px-8 sm:px-10 py-4 sm:py-5 min-h-14 rounded-[24px] text-white font-black text-base sm:text-lg shadow-[0_0_30px_rgba(16,185,129,0.3)] hover:scale-105 active:scale-95 transition-all group inline-flex items-center justify-center gap-3 w-full sm:w-auto"
                         >
                             НАЧАТЬ ПРИКЛЮЧЕНИЕ
                             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                         </button>
-                        <button className="px-10 py-5 rounded-[24px] bg-white/5 border border-white/10 text-white font-black text-lg hover:bg-white/10 transition-all flex items-center gap-3">
+                        <button type="button" className="px-8 sm:px-10 py-4 sm:py-5 min-h-14 rounded-[24px] bg-white/5 border border-white/10 text-white font-black text-base sm:text-lg hover:bg-white/10 transition-all inline-flex items-center justify-center gap-3 w-full sm:w-auto">
                             <Play className="w-5 h-5 fill-white" />
                             СМОТРЕТЬ ДЕМО
                         </button>
@@ -205,7 +206,7 @@ export default function LandingPage({ onStart }) {
                             className="absolute -top-10 -right-10 w-32 h-32 glass-morphism rounded-3xl p-6 border-white/10 text-center"
                         >
                             <span className="text-4xl block mb-2">🏮</span>
-                            <span className="text-[10px] font-black uppercase text-emerald-400">+10 XP</span>
+                            <span className="aura-micro font-black uppercase text-emerald-400">+10 XP</span>
                         </motion.div>
                     </div>
                 </div>

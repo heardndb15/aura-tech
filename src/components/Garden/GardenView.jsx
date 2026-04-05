@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useApp } from '../../context/AppContext';
 import { calculateGardenHealth, getStreakLabel, xpForLevel } from '../../utils/economy';
 import { Sprout, Brain, Dumbbell, Heart, Skull, TrendingUp, Flame } from 'lucide-react';
@@ -56,12 +56,12 @@ export default function GardenView({ setActiveTab }) {
     const conqueredFears = fears.filter(f => f.status === 'conquered').length;
 
     return (
-        <div className="pb-4 stagger-children">
+        <div className="aura-view stagger-children">
             {/* Immersive Garden Header */}
             <motion.div
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="relative overflow-hidden mb-8 rounded-3xl"
+                className="relative overflow-hidden rounded-3xl p-5 sm:p-6"
                 style={{
                     background: 'var(--accent-gradient)',
                     minHeight: '420px',
@@ -69,7 +69,6 @@ export default function GardenView({ setActiveTab }) {
                     flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    padding: '24px',
                     boxShadow: 'var(--shadow-glow)',
                 }}
             >
@@ -87,28 +86,30 @@ export default function GardenView({ setActiveTab }) {
 
                 {/* Shop Button */}
                 <motion.button
+                    type="button"
                     whileHover={{ scale: 1.1, rotate: 5 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={() => setShowShop(true)}
-                    className="absolute top-6 right-6 w-12 h-12 rounded-full flex items-center justify-center text-xl shadow-lg border border-white/20 z-20"
+                    className="absolute top-6 right-6 w-12 h-12 min-w-12 min-h-12 rounded-full flex items-center justify-center text-xl shadow-lg border border-white/20 z-20"
+                    aria-label="Open decoration shop"
                     style={{ background: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(10px)' }}
                 >
                     💎
                 </motion.button>
 
                 {/* Garden Stats Overlay */}
-                <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/20 to-transparent flex items-end justify-between text-white">
-                    <div>
-                        <p className="text-[10px] font-bold uppercase tracking-wider opacity-80">Overall Vitality</p>
+                <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-5 bg-gradient-to-t from-black/20 to-transparent flex items-end justify-between gap-4 text-white">
+                    <div className="min-w-0">
+                        <p className="aura-micro font-bold uppercase tracking-wider opacity-80 mb-1">Overall Vitality</p>
                         <div className="flex items-center gap-2">
                             <h2 className="text-3xl font-black" style={{ fontFamily: 'Outfit' }}>{health}%</h2>
-                            <Sprout className="w-5 h-5 text-white/60 bounce" />
+                            <Sprout className="w-5 h-5 text-white/60 bounce shrink-0" />
                         </div>
                     </div>
-                    <div className="text-right">
-                        <div className="flex gap-4 text-[10px] font-bold">
-                            <span className="bg-white/20 px-2 py-1 rounded-lg">📋 {activeTasks} TASKS</span>
-                            <span className="bg-white/20 px-2 py-1 rounded-lg">🪙 {wallet.balance} TOKENS</span>
+                    <div className="text-right shrink-0">
+                        <div className="flex flex-wrap justify-end gap-2 sm:gap-3 aura-micro font-bold">
+                            <span className="bg-white/20 px-2.5 py-1.5 rounded-lg">📋 {activeTasks} TASKS</span>
+                            <span className="bg-white/20 px-2.5 py-1.5 rounded-lg">🪙 {wallet.balance} TOKENS</span>
                         </div>
                     </div>
                 </div>
@@ -116,10 +117,11 @@ export default function GardenView({ setActiveTab }) {
 
             {/* Daily Check-in Button */}
             <motion.button
+                type="button"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => setShowMoodCheckIn(true)}
-                className="w-full rounded-xl p-4 mb-6 flex items-center gap-3 transition-all duration-200 btn-game"
+                className="w-full min-h-[3.25rem] rounded-xl p-4 sm:p-5 flex items-center gap-3 sm:gap-4 transition-all duration-200 btn-game text-left"
                 style={{
                     background: 'var(--aura-surface)',
                 }}
@@ -146,11 +148,13 @@ export default function GardenView({ setActiveTab }) {
             </AnimatePresence>
 
             {/* Garden Zones Grid */}
-            <h3 className="text-sm font-semibold mb-3" style={{ color: 'var(--aura-text-secondary)', fontFamily: 'Outfit' }}>
+            <div className="aura-subsection">
+            <h3 className="text-sm font-semibold" style={{ color: 'var(--aura-text-secondary)', fontFamily: 'Outfit' }}>
                 🌱 Your Garden Zones
             </h3>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+            {/* sm: три колонки слишком узкие (~190px) — контент «впирается» в край; 2→3 только с lg */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
                 {ZONES.map((zone, i) => {
                     const data = garden[zone.key];
                     const xpNeeded = xpForLevel(data.level);
@@ -163,54 +167,54 @@ export default function GardenView({ setActiveTab }) {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: i * 0.1 }}
-                            className="rounded-xl p-4 cursor-pointer transition-all duration-200 card-game"
+                            className="garden-zone-card min-w-0 rounded-xl cursor-pointer transition-all duration-200 card-game"
                             style={{
                                 background: 'var(--aura-surface)',
                             }}
                             onClick={() => setActiveTab('tasks')}
                         >
-                            <div className="flex items-center gap-2 mb-3">
+                            <div className="flex items-start gap-3 mb-4">
                                 <div
-                                    className="w-9 h-9 rounded-lg flex items-center justify-center text-lg"
+                                    className="w-10 h-10 shrink-0 rounded-lg flex items-center justify-center text-lg"
                                     style={{ background: zone.light }}
                                 >
                                     {zone.emoji}
                                 </div>
-                                <div>
-                                    <p className="text-sm font-semibold" style={{ color: 'var(--aura-text)' }}>
+                                <div className="min-w-0 flex-1">
+                                    <p className="text-sm font-semibold leading-snug [overflow-wrap:anywhere]" style={{ color: 'var(--aura-text)' }}>
                                         {zone.label}
                                     </p>
-                                    <p className="text-[10px]" style={{ color: 'var(--aura-text-muted)' }}>
+                                    <p className="aura-micro mt-1 leading-snug [overflow-wrap:anywhere]" style={{ color: 'var(--aura-text-muted)' }}>
                                         {zone.subtitle}
                                     </p>
                                 </div>
                             </div>
 
                             {/* Level + XP */}
-                            <div className="flex items-center justify-between mb-2">
-                                <span className="text-xs font-semibold" style={{ color: zone.color }}>
+                            <div className="flex items-baseline justify-between gap-2 mb-3">
+                                <span className="text-xs font-semibold shrink-0" style={{ color: zone.color }}>
                                     Lvl {data.level}
                                 </span>
-                                <span className="text-[10px]" style={{ color: 'var(--aura-text-muted)' }}>
+                                <span className="aura-micro shrink-0 text-right tabular-nums" style={{ color: 'var(--aura-text-muted)' }}>
                                     {data.xp % 100}/{100} XP
                                 </span>
                             </div>
 
                             {/* XP Progress bar */}
-                            <div className="w-full h-1.5 rounded-full mb-2"
+                            <div className="w-full min-w-0 h-1.5 rounded-full mb-3"
                                 style={{ background: zone.light }}>
                                 <motion.div
                                     initial={{ width: 0 }}
                                     animate={{ width: `${progress}%` }}
                                     transition={{ duration: 0.8, delay: 0.5 + i * 0.1 }}
-                                    className="h-full rounded-full"
+                                    className="h-full rounded-full max-w-full"
                                     style={{ background: zone.color }}
                                 />
                             </div>
 
-                            <div className="flex items-center gap-1">
-                                <Flame className="w-3 h-3" style={{ color: zone.color }} />
-                                <span className="text-[10px] font-medium" style={{ color: 'var(--aura-text-muted)' }}>
+                            <div className="flex items-start gap-2 min-w-0">
+                                <Flame className="w-3.5 h-3.5 shrink-0 mt-0.5" style={{ color: zone.color }} />
+                                <span className="aura-micro font-medium leading-snug min-w-0 [overflow-wrap:anywhere]" style={{ color: 'var(--aura-text-muted)' }}>
                                     {getStreakLabel(data.streak)}
                                 </span>
                             </div>
@@ -218,10 +222,11 @@ export default function GardenView({ setActiveTab }) {
                     );
                 })}
             </div>
+            </div>
 
             {/* Weeds Section */}
             <motion.div
-                className="rounded-xl p-4 cursor-pointer transition-all duration-200 card-game"
+                className="rounded-xl p-4 sm:p-5 cursor-pointer transition-all duration-200 card-game"
                 style={{
                     background: 'var(--aura-surface)',
                 }}
@@ -240,7 +245,7 @@ export default function GardenView({ setActiveTab }) {
                     </div>
                     <div className="text-right">
                         <p className="text-lg font-bold" style={{ color: 'var(--weed-primary)' }}>{activeFears}</p>
-                        <p className="text-[10px]" style={{ color: 'var(--aura-text-muted)' }}>
+                        <p className="aura-micro" style={{ color: 'var(--aura-text-muted)' }}>
                             {conqueredFears} conquered
                         </p>
                     </div>

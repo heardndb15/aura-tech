@@ -19,41 +19,43 @@ export default function FearsView() {
     };
 
     return (
-        <div className="pb-4">
+        <div className="aura-view">
             {/* Header */}
-            <div className="flex items-center justify-between mb-2">
+            <div className="flex flex-col gap-3 sm:gap-4">
+                <div className="flex items-center justify-between gap-3">
                 <h2 className="text-xl font-bold" style={{ fontFamily: 'Outfit' }}>Weeds 🌾</h2>
                 <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setShowAdd(true)}
-                    className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-white text-sm font-black btn-game shadow-lg"
+                    className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-black btn-game shadow-lg shrink-0"
                     style={{ background: 'var(--weed-primary)' }}
                 >
                     <Plus className="w-5 h-5" /> Slayer Mode
                 </motion.button>
-            </div>
-            <p className="text-xs mb-5" style={{ color: 'var(--aura-text-muted)' }}>
+                </div>
+                <p className="text-xs leading-relaxed max-w-prose" style={{ color: 'var(--aura-text-muted)' }}>
                 Face your fears. Complete challenges to remove weeds from your garden.
             </p>
+            </div>
 
             {/* Stats banner */}
-            <div className="grid grid-cols-2 gap-3 mb-5">
-                <div className="rounded-xl p-3" style={{ background: 'var(--weed-light)', border: '1px solid var(--weed-primary)33' }}>
+            <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                <div className="rounded-xl p-4" style={{ background: 'var(--weed-light)', border: '1px solid var(--weed-primary)33' }}>
                     <div className="flex items-center gap-2">
                         <Skull className="w-5 h-5" style={{ color: 'var(--weed-primary)' }} />
                         <div>
                             <p className="text-lg font-bold" style={{ color: 'var(--weed-primary)' }}>{activeFears.length}</p>
-                            <p className="text-[10px]" style={{ color: 'var(--aura-text-muted)' }}>Active weeds</p>
+                            <p className="aura-micro" style={{ color: 'var(--aura-text-muted)' }}>Active weeds</p>
                         </div>
                     </div>
                 </div>
-                <div className="rounded-xl p-3" style={{ background: 'var(--stem-light)', border: '1px solid var(--stem-primary)33' }}>
+                <div className="rounded-xl p-4" style={{ background: 'var(--stem-light)', border: '1px solid var(--stem-primary)33' }}>
                     <div className="flex items-center gap-2">
                         <Swords className="w-5 h-5" style={{ color: 'var(--stem-primary)' }} />
                         <div>
                             <p className="text-lg font-bold" style={{ color: 'var(--stem-primary)' }}>{conqueredFears.length}</p>
-                            <p className="text-[10px]" style={{ color: 'var(--aura-text-muted)' }}>Conquered</p>
+                            <p className="aura-micro" style={{ color: 'var(--aura-text-muted)' }}>Conquered</p>
                         </div>
                     </div>
                 </div>
@@ -62,10 +64,11 @@ export default function FearsView() {
             {/* Active Fears */}
             {activeFears.length > 0 && (
                 <>
-                    <h3 className="text-sm font-semibold mb-3" style={{ color: 'var(--aura-text-secondary)' }}>
+                    <div className="aura-subsection">
+                    <h3 className="text-sm font-semibold" style={{ color: 'var(--aura-text-secondary)' }}>
                         🔥 Active Fears
                     </h3>
-                    <div className="space-y-3 mb-6">
+                    <div className="space-y-3 sm:space-y-4">
                         <AnimatePresence>
                             {activeFears.map((fear, i) => (
                                 <motion.div
@@ -74,7 +77,7 @@ export default function FearsView() {
                                     animate={{ opacity: 1, x: 0 }}
                                     exit={{ opacity: 0, x: 20 }}
                                     transition={{ delay: i * 0.05 }}
-                                    className="rounded-2xl p-4 transition-all duration-200 card-game"
+                                    className="rounded-2xl p-4 sm:p-5 transition-all duration-200 card-game"
                                     style={{
                                         background: 'var(--aura-surface)',
                                     }}
@@ -88,7 +91,7 @@ export default function FearsView() {
                                             <h4 className="text-sm font-semibold mb-1" style={{ color: 'var(--aura-text)' }}>
                                                 {fear.text}
                                             </h4>
-                                            <div className="rounded-lg p-2.5 mb-3" style={{ background: 'var(--aura-bg-secondary)' }}>
+                                            <div className="rounded-lg p-3 sm:p-4 mb-4" style={{ background: 'var(--aura-bg-secondary)' }}>
                                                 <p className="text-xs font-medium mb-0.5" style={{ color: 'var(--bud-primary)' }}>
                                                     💪 Challenge:
                                                 </p>
@@ -111,20 +114,21 @@ export default function FearsView() {
                             ))}
                         </AnimatePresence>
                     </div>
+                    </div>
                 </>
             )}
 
             {/* Conquered Fears */}
             {conqueredFears.length > 0 && (
-                <>
-                    <h3 className="text-sm font-semibold mb-3" style={{ color: 'var(--aura-text-secondary)' }}>
+                <div className="aura-subsection">
+                    <h3 className="text-sm font-semibold" style={{ color: 'var(--aura-text-secondary)' }}>
                         ✅ Conquered
                     </h3>
-                    <div className="space-y-2">
+                    <div className="space-y-3">
                         {conqueredFears.map((fear) => (
                             <div
                                 key={fear.id}
-                                className="rounded-xl p-3 flex items-center gap-3 opacity-70"
+                                className="rounded-xl p-4 flex items-center gap-3 sm:gap-4 opacity-70"
                                 style={{
                                     background: 'var(--aura-surface)',
                                     border: '1px solid var(--aura-border)',
@@ -140,7 +144,7 @@ export default function FearsView() {
                             </div>
                         ))}
                     </div>
-                </>
+                </div>
             )}
 
             {/* Empty state */}
@@ -163,7 +167,7 @@ export default function FearsView() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-50 flex items-center justify-center p-4"
+                        className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-5"
                         style={{ background: 'rgba(0,0,0,0.5)' }}
                         onClick={() => setShowAdd(false)}
                     >
@@ -172,18 +176,19 @@ export default function FearsView() {
                             animate={{ scale: 1, opacity: 1 }}
                             exit={{ scale: 0.9, opacity: 0 }}
                             transition={{ type: 'spring', damping: 25 }}
-                            className="w-full max-w-sm rounded-2xl p-6"
+                            className="w-full max-w-sm rounded-2xl p-5 sm:p-6"
                             style={{ background: 'var(--aura-surface)', boxShadow: 'var(--shadow-lg)' }}
                             onClick={(e) => e.stopPropagation()}
                         >
-                            <div className="flex items-center justify-between mb-4">
+                            <div className="flex items-center justify-between gap-3 mb-5">
                                 <h3 className="font-bold" style={{ fontFamily: 'Outfit' }}>🌾 Name Your Fear</h3>
-                                <button onClick={() => setShowAdd(false)} style={{ color: 'var(--aura-text-muted)' }}>
+                                <button type="button" onClick={() => setShowAdd(false)} className="aura-icon-btn rounded-xl shrink-0" style={{ color: 'var(--aura-text-muted)' }} aria-label="Close">
                                     <X className="w-5 h-5" />
                                 </button>
                             </div>
 
-                            <p className="text-xs mb-4" style={{ color: 'var(--aura-text-muted)' }}>
+                            <div className="flex flex-col gap-4">
+                            <p className="text-xs leading-relaxed" style={{ color: 'var(--aura-text-muted)' }}>
                                 Write down something you're afraid of. We'll generate a challenge to help you face it.
                             </p>
 
@@ -193,7 +198,7 @@ export default function FearsView() {
                                 value={fearText}
                                 onChange={(e) => setFearText(e.target.value)}
                                 placeholder="e.g., Public speaking, rejection, heights..."
-                                className="w-full px-3 py-3 rounded-xl text-sm outline-none mb-4"
+                                className="w-full px-3 py-3 rounded-xl text-sm outline-none"
                                 style={{
                                     background: 'var(--aura-bg-secondary)',
                                     border: '1px solid var(--aura-border)',
@@ -203,14 +208,16 @@ export default function FearsView() {
                             />
 
                             <button
+                                type="button"
                                 id="fear-add"
                                 onClick={handleAddFear}
                                 disabled={!fearText.trim()}
-                                className="w-full py-3 rounded-xl text-white text-sm font-black transition-all duration-200 disabled:opacity-40 btn-game shadow-lg"
+                                className="w-full min-h-11 py-3 rounded-xl text-white text-sm font-black transition-all duration-200 disabled:opacity-40 btn-game shadow-lg"
                                 style={{ background: 'var(--weed-primary)' }}
                             >
                                 Start Boss Fight ⚔️
                             </button>
+                            </div>
                         </motion.div>
                     </motion.div>
                 )}

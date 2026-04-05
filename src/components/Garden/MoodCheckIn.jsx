@@ -30,7 +30,7 @@ export default function MoodCheckIn({ onClose }) {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="fixed inset-0 z-50 flex items-center justify-center p-4"
+                className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-5"
                 style={{ background: 'rgba(0,0,0,0.5)' }}
                 onClick={onClose}
             >
@@ -39,7 +39,7 @@ export default function MoodCheckIn({ onClose }) {
                     animate={{ scale: 1, opacity: 1 }}
                     exit={{ scale: 0.9, opacity: 0 }}
                     transition={{ type: 'spring', damping: 25 }}
-                    className="w-full max-w-sm rounded-2xl p-6"
+                    className="w-full max-w-sm rounded-2xl p-5 sm:p-6"
                     style={{
                         background: 'var(--aura-surface)',
                         boxShadow: 'var(--shadow-lg)',
@@ -62,29 +62,32 @@ export default function MoodCheckIn({ onClose }) {
                         </motion.div>
                     ) : (
                         <>
-                            <div className="flex items-center justify-between mb-4">
+                            <div className="flex items-center justify-between gap-3 mb-5">
                                 <h3 className="font-bold" style={{ fontFamily: 'Outfit' }}>How are you feeling?</h3>
-                                <button onClick={onClose} style={{ color: 'var(--aura-text-muted)' }}>
-                                    <X className="w-5 h-5" />
+                                <button type="button" onClick={onClose} className="aura-icon-btn rounded-xl" style={{ color: 'var(--aura-text-muted)' }} aria-label="Close">
+                                    <X className="w-5 h-5 shrink-0" aria-hidden />
                                 </button>
                             </div>
 
                             {/* Mood selector */}
-                            <div className="flex justify-between mb-5">
+                            <div className="flex justify-between gap-1 sm:gap-2 mb-6">
                                 {MOODS.map((mood) => (
                                     <motion.button
+                                        type="button"
                                         key={mood.value}
-                                        whileHover={{ scale: 1.1 }}
-                                        whileTap={{ scale: 0.9 }}
+                                        whileHover={{ scale: 1.06 }}
+                                        whileTap={{ scale: 0.95 }}
                                         onClick={() => setSelectedMood(mood.value)}
-                                        className="flex flex-col items-center gap-1 p-2 rounded-xl transition-all duration-200"
+                                        className="flex flex-1 min-w-0 flex-col items-center justify-center gap-1 py-3 px-1 min-h-[4.5rem] rounded-xl transition-all duration-200"
+                                        aria-pressed={selectedMood === mood.value}
+                                        aria-label={`Mood ${mood.label}`}
                                         style={{
                                             background: selectedMood === mood.value ? 'var(--root-light)' : 'transparent',
                                             border: selectedMood === mood.value ? '2px solid var(--root-primary)' : '2px solid transparent',
                                         }}
                                     >
                                         <span className="text-2xl">{mood.emoji}</span>
-                                        <span className="text-[10px] font-medium" style={{
+                                        <span className="aura-micro font-medium" style={{
                                             color: selectedMood === mood.value ? 'var(--root-primary)' : 'var(--aura-text-muted)',
                                         }}>
                                             {mood.label}
@@ -100,7 +103,7 @@ export default function MoodCheckIn({ onClose }) {
                                 value={note}
                                 onChange={(e) => setNote(e.target.value)}
                                 rows={3}
-                                className="w-full p-3 rounded-xl text-sm resize-none outline-none mb-4"
+                                className="w-full p-3 sm:p-4 rounded-xl text-sm resize-none outline-none mb-5"
                                 style={{
                                     background: 'var(--aura-bg-secondary)',
                                     border: '1px solid var(--aura-border)',
@@ -109,10 +112,11 @@ export default function MoodCheckIn({ onClose }) {
                             />
 
                             <button
+                                type="button"
                                 id="mood-submit"
                                 onClick={handleSubmit}
                                 disabled={!selectedMood}
-                                className="w-full py-3 rounded-xl text-white text-sm font-semibold transition-all duration-200 disabled:opacity-40"
+                                className="w-full min-h-11 py-3 rounded-xl text-white text-sm font-semibold transition-all duration-200 disabled:opacity-40"
                                 style={{ background: 'var(--accent-gradient)' }}
                             >
                                 Record Mood 🧘

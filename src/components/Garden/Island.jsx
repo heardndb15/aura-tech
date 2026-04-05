@@ -57,7 +57,7 @@ const IslandPlot = ({ zone, data, active, onHover }) => {
 
                 {/* Level indicator */}
                 <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-white/10 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/20">
-                    <span className="text-[10px] font-bold text-white whitespace-nowrap">Lvl {data.level}</span>
+                    <span className="aura-micro font-bold text-white whitespace-nowrap">Lvl {data.level}</span>
                 </div>
 
                 {/* Growth Glow */}
@@ -106,7 +106,7 @@ export default function Island({ garden }) {
     ];
 
     return (
-        <div className="relative w-full aspect-square max-w-[400px] mx-auto mb-8 p-4">
+        <div className="relative w-full aspect-square max-w-[400px] mx-auto mb-4 sm:mb-6 p-3 sm:p-4">
             {/* Water/Shadow underneath */}
             <div className="absolute top-[80%] left-1/4 right-1/4 h-12 bg-blue-400/10 blur-2xl rounded-[100%] z-0 animate-pulse" />
 
@@ -134,9 +134,9 @@ export default function Island({ garden }) {
                 </div>
 
                 {/* Decorative Flowers */}
-                <div className="absolute top-[20%] left-[30%] text-[10px] opacity-60">🌸</div>
-                <div className="absolute top-[60%] right-[25%] text-[10px] opacity-60">🌼</div>
-                <div className="absolute bottom-[20%] left-[45%] text-[10px] opacity-60">🌸</div>
+                <div className="absolute top-[20%] left-[30%] aura-micro opacity-60">🌸</div>
+                <div className="absolute top-[60%] right-[25%] aura-micro opacity-60">🌼</div>
+                <div className="absolute bottom-[20%] left-[45%] aura-micro opacity-60">🌸</div>
 
                 {/* Purchased Decorations */}
                 {garden.decorations?.map((decor, i) => (
@@ -217,7 +217,7 @@ export default function Island({ garden }) {
                         initial={{ opacity: 0, y: 10, scale: 0.9 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 10, scale: 0.9 }}
-                        className="absolute bottom-0 left-1/2 -translate-x-1/2 z-20 bg-white/90 dark:bg-black/80 backdrop-blur-md p-3 rounded-2xl border border-white/20 shadow-xl min-w-[200px]"
+                        className="absolute bottom-0 left-1/2 -translate-x-1/2 z-20 bg-white/90 dark:bg-black/80 backdrop-blur-md p-3 sm:p-4 rounded-2xl border border-white/20 shadow-xl min-w-[200px]"
                     >
                         <div className="flex items-center gap-2 mb-1">
                             <span className="text-xl">{zones.find(z => z.key === hoveredZone).emoji}</span>
@@ -232,8 +232,8 @@ export default function Island({ garden }) {
                             />
                         </div>
                         <div className="flex justify-between mt-1">
-                            <span className="text-[10px] text-muted-foreground">Lvl {garden[hoveredZone].level}</span>
-                            <span className="text-[10px] text-muted-foreground">{garden[hoveredZone].xp % 100}/100 XP</span>
+                            <span className="aura-micro text-muted-foreground">Lvl {garden[hoveredZone].level}</span>
+                            <span className="aura-micro text-muted-foreground">{garden[hoveredZone].xp % 100}/100 XP</span>
                         </div>
                     </motion.div>
                 )}
