@@ -9,6 +9,7 @@ import time
 import os
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
+from ml_models import AuraImageClassifier, HabitPredictor
 
 load_dotenv()
 
@@ -31,6 +32,22 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# --- Global ML Model Instances ---
+classifier = AuraImageClassifier()
+predictor = HabitPredictor()
+
+# --- Anti-AI Physical Proof Constants ---
+GESTURES = ['peace sign (V)', 'thumbs up', 'open palm', 'pointing up', 'fist bump', 'OK sign', 'rock on (🤘)', 'three fingers']
+OBJECTS = ['a pen', 'a book', 'a cup/mug', 'headphones', 'a notebook', 'your phone case', 'a water bottle', 'a key', 'a spoon', 'sunglasses']
+COLORS = ['red', 'blue', 'green', 'yellow', 'white', 'black', 'orange', 'purple']
+BACKGROUNDS = ['near a window', 'at your desk', 'near a door', 'outside', 'near a plant', 'in a kitchen', 'near bookshelves', 'on a couch']
+TASK_SPECIFIC = {
+    'root': ['your journal/diary', 'a calming item', 'something that makes you happy'],
+    'stem': ['your textbook/study material', 'your exercise equipment', 'a book you\'re reading'],
+    'bud': ['something you shared with someone', 'a thank you note', 'a group activity item'],
+    'weed': ['something that represents your courage', 'a motivational note', 'a completed challenge note'],
+}
 
 # --- Database Initialization ---
 DB_PATH = "aura.db"
@@ -257,6 +274,45 @@ async def update_fear(fear: FearData):
         """, (fear.id, fear.user_id, fear.text, fear.challenge, fear.status, fear.createdAt, fear.conqueredAt))
         await conn.commit()
     return {"success": True}
+
+# --- New Endpoints for Technical Video ---
+
+@app.get("/api/proof/generate/{category}")
+async def generate_proof(category: str):
+    import random
+    gesture = random.choice(GESTURES)
+    obj_item = random.choice(OBJECTS)
+    color = random.choice(COLORS)
+    bg = random.choice(BACKGROUNDS)
+    specific_list = TASK_SPECIFIC.get(category, TASK_SPECIFIC['stem'])
+    specific = random.choice(specific_list)
+
+    requirements = [
+        f"Show your hand with a {gesture}",
+        f"Include a {color} {obj_item}",
+        f"Be {bg}",
+        f"Have {specific} visible"
+    ]
+    # Pick 3 random
+    selected = random.sample(requirements, 3)
+    challenge_str = " + ".join(selected)
+    
+    return {
+        "challenge": f"📸 Take a photo with: {challenge_str}",
+        "requirements": selected,
+        "expires_in": 300
+    }
+
+@app.get("/api/analysis/risk/{username}")
+async def get_risk_analysis(username: str):
+    # Simulated analysis based on dummy user history
+    # In production, this would query DB for trends
+    history = {"streak": 4, "last_action_hours": 18}
+    result = predictor.forecast_risk(history)
+    return {
+        "username": username,
+        "analysis": result
+    }
 
 if __name__ == "__main__":
     import uvicorn

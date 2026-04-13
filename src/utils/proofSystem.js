@@ -39,36 +39,36 @@ const TASK_SPECIFIC = {
 
 /**
  * Generate a random proof challenge for a given task category
+ * Fetches from the Python backend to ensure secure, seeded challenges.
  * @param {string} category - root | stem | bud | weed
- * @returns {{ challenge: string, requirements: string[], expiresIn: number }}
+ * @returns {Promise<{ challenge: string, requirements: string[], expiresIn: number, id: string }>}
  */
-export function generateProofChallenge(category = 'stem') {
-    const gesture = GESTURES[Math.floor(Math.random() * GESTURES.length)];
-    const color = COLORS[Math.floor(Math.random() * COLORS.length)];
-    const background = BACKGROUNDS[Math.floor(Math.random() * BACKGROUNDS.length)];
-    const specificItems = TASK_SPECIFIC[category] || TASK_SPECIFIC.stem;
-    const specific = specificItems[Math.floor(Math.random() * specificItems.length)];
-
-    const requirements = [
-        `Show your hand with a ${gesture}`,
-        `Include a ${color} object`,
-        `Be ${background}`,
-        `Have ${specific} visible`,
-    ];
-
-    // Pick 2-3 random requirements for the challenge
-    const count = Math.random() > 0.5 ? 3 : 2;
-    const selectedReqs = shuffle(requirements).slice(0, count);
-
-    const challenge = `📸 Take a photo with: ${selectedReqs.join(' + ')}`;
-
-    return {
-        id: 'proof-' + Date.now(),
-        challenge,
-        requirements: selectedReqs,
-        generatedAt: new Date().toISOString(),
-        expiresIn: 300, // 5 minutes to complete
-    };
+export async function generateProofChallenge(category = 'stem') {
+    try {
+        const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+        const response = await fetch(`${API_URL}/api/proof/generate/${category}`);
+        if (!response.ok) throw new Error('Backend failed');
+        
+        const data = await response.json();
+        
+        return {
+            id: 'proof-' + Date.now(),
+            challenge: data.challenge,
+            requirements: data.requirements,
+            generatedAt: new Date().toISOString(),
+            expiresIn: data.expires_in,
+        };
+    } catch (err) {
+        console.error("Proof API failed, falling back to basic generation:", err);
+        // Fallback for safety during development
+        return {
+            id: 'proof-' + Date.now(),
+            challenge: "📸 Take a photo of your effort (Manual verification enabled)",
+            requirements: ["Show your progress"],
+            generatedAt: new Date().toISOString(),
+            expiresIn: 300,
+        };
+    }
 }
 
 /**
