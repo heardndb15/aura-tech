@@ -3,10 +3,11 @@ import { useApp } from '../../context/AppContext';
 import { calculateGardenHealth, getStreakLabel, xpForLevel } from '../../utils/economy';
 import { Sprout, Brain, Dumbbell, Heart, Skull, TrendingUp, Flame } from 'lucide-react';
 import MoodCheckIn from './MoodCheckIn';
-import Island from './Island';
+import ProgressiveGarden from './ProgressiveGarden';
 import ShopModal from './ShopModal';
 import { useState } from 'react';
 import { ShoppingBag } from 'lucide-react';
+
 
 const ZONES = [
     {
@@ -55,6 +56,10 @@ export default function GardenView({ setActiveTab }) {
     const activeFears = fears.filter(f => f.status === 'active').length;
     const conqueredFears = fears.filter(f => f.status === 'conquered').length;
 
+    // Calculate progress for the garden
+    const totalTasks = tasks.length;
+    const progress = totalTasks === 0 ? 0 : Math.round((completedTasks / totalTasks) * 100);
+
     return (
         <div className="aura-view stagger-children">
             {/* Immersive Garden Header */}
@@ -79,8 +84,12 @@ export default function GardenView({ setActiveTab }) {
                 </div>
 
                 {/* The Garden Island */}
-                <div className="relative z-10 w-full">
-                    <Island garden={garden} />
+                <div className="relative z-10 w-full mb-4">
+                    <ProgressiveGarden progress={progress} />
+                </div>
+
+                <div className="z-10 bg-white/20 px-4 py-2 rounded-2xl backdrop-blur-sm border border-white/40 mb-4 shadow-lg text-center">
+                    <p className="text-xl font-bold text-white tracking-widest uppercase">Progress: {progress}%</p>
                 </div>
 
                 {/* Shop Button */}

@@ -9,6 +9,7 @@ import FearsView from './components/Fears/FearsView';
 import ReviewView from './components/Review/ReviewView';
 import ProfileView from './components/Profile/ProfileView';
 import LandingPage from './components/Landing/LandingPage';
+import VerificationDemo from './components/Verification/VerificationDemo';
 import { AnimatePresence, motion } from 'framer-motion';
 
 const PAGES = {
@@ -17,6 +18,7 @@ const PAGES = {
   fears: FearsView,
   review: ReviewView,
   profile: ProfileView,
+  verification: VerificationDemo,
 };
 
 export default function App() {

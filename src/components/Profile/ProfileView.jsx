@@ -5,10 +5,10 @@ import { useTheme } from '../../context/ThemeContext';
 import { calculateGardenHealth, formatTokens, getStreakLabel, distributeLostStake } from '../../utils/economy';
 import {
     User, Coins, TrendingUp, TrendingDown, ArrowUpRight,
-    ArrowDownRight, Flame, Award, Calendar, Target
+    ArrowDownRight, Flame, Award, Calendar, Target, Lock
 } from 'lucide-react';
 
-export default function ProfileView() {
+export default function ProfileView({ setActiveTab }) {
     const { user } = useAuth();
     const { garden, wallet, tasks, moods, fears } = useApp();
     const { theme } = useTheme();
@@ -203,6 +203,16 @@ export default function ProfileView() {
                     ))
                 )}
             </div>
+
+            {/* Hidden Verification Access */}
+            <div className="mt-12 flex justify-center pb-8">
+                <button 
+                  onClick={() => setActiveTab('verification')}
+                  className="opacity-20 hover:opacity-100 transition-opacity flex items-center gap-2 text-[10px] font-mono text-white tracking-widest"
+                >
+                    <Lock className="w-3 h-3" />
+                    DEVKIT // VERIFICATION
+                </button>
             </div>
         </div>
     );
