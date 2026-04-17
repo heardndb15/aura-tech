@@ -57,14 +57,16 @@ export default function ReviewView() {
     };
 
     return (
-        <div className="pb-4">
-            <h2 className="text-xl font-bold mb-1" style={{ fontFamily: 'Outfit' }}>Peer Review</h2>
-            <p className="text-xs mb-5" style={{ color: 'var(--aura-text-muted)' }}>
+        <div className="aura-view">
+            <div className="flex flex-col gap-2 sm:gap-3">
+            <h2 className="text-xl font-bold" style={{ fontFamily: 'Outfit' }}>Peer Review</h2>
+            <p className="text-xs leading-relaxed max-w-prose" style={{ color: 'var(--aura-text-muted)' }}>
                 Help verify other users' task completions. You earn karma for each review!
             </p>
+            </div>
 
             {/* Progress */}
-            <div className="flex items-center gap-2 mb-5">
+            <div className="flex items-center gap-3">
                 <div className="flex-1 h-1.5 rounded-full" style={{ background: 'var(--aura-bg-secondary)' }}>
                     <motion.div
                         className="h-full rounded-full"
@@ -96,8 +98,9 @@ export default function ReviewView() {
                             +{reviewItems.length * 5} karma earned 🧘
                         </p>
                         <button
+                            type="button"
                             onClick={() => { setCurrentIndex(0); setVoted({}); }}
-                            className="mt-4 px-4 py-2 rounded-xl text-sm font-medium"
+                            className="mt-2 px-4 py-2.5 min-h-11 rounded-xl text-sm font-medium"
                             style={{ background: 'var(--stem-light)', color: 'var(--stem-primary)' }}
                         >
                             Review again
@@ -131,7 +134,7 @@ export default function ReviewView() {
 
                             {/* Category badge */}
                             <span
-                                className="absolute top-3 left-3 text-[10px] font-semibold px-2 py-1 rounded-full"
+                                className="absolute top-3 left-3 aura-micro font-semibold px-2 py-1 rounded-full"
                                 style={{
                                     background: categoryColors[currentItem.category]?.bg,
                                     color: categoryColors[currentItem.category]?.color,
@@ -142,8 +145,8 @@ export default function ReviewView() {
                         </div>
 
                         {/* Info */}
-                        <div className="p-4">
-                            <div className="flex items-center gap-2 mb-2">
+                        <div className="p-4 sm:p-5 flex flex-col gap-4">
+                            <div className="flex items-center gap-2 sm:gap-3">
                                 <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold text-white"
                                     style={{ background: 'var(--accent-gradient)' }}>
                                     {currentItem.userName[0]}
@@ -152,40 +155,41 @@ export default function ReviewView() {
                                     <p className="text-xs font-semibold" style={{ color: 'var(--aura-text)' }}>
                                         {currentItem.userName}
                                     </p>
-                                    <p className="text-[10px]" style={{ color: 'var(--aura-text-muted)' }}>
+                                    <p className="aura-micro" style={{ color: 'var(--aura-text-muted)' }}>
                                         {new Date(currentItem.timestamp).toLocaleTimeString()}
                                     </p>
                                 </div>
                             </div>
 
-                            <h4 className="text-sm font-semibold mb-2" style={{ color: 'var(--aura-text)' }}>
+                            <h4 className="text-sm font-semibold leading-snug" style={{ color: 'var(--aura-text)' }}>
                                 {currentItem.taskTitle}
                             </h4>
 
                             {/* Challenge requirements */}
-                            <div className="rounded-lg p-3 mb-4" style={{ background: 'var(--aura-bg-secondary)' }}>
-                                <p className="text-[10px] font-semibold mb-1" style={{ color: 'var(--aura-text-secondary)' }}>
+                            <div className="rounded-lg p-3 sm:p-4" style={{ background: 'var(--aura-bg-secondary)' }}>
+                                <p className="aura-micro font-semibold mb-1.5" style={{ color: 'var(--aura-text-secondary)' }}>
                                     Challenge Requirements:
                                 </p>
-                                <p className="text-xs" style={{ color: 'var(--aura-text-muted)' }}>
+                                <p className="text-xs leading-relaxed" style={{ color: 'var(--aura-text-muted)' }}>
                                     {currentItem.challenge}
                                 </p>
                             </div>
 
                             {/* Vote section */}
-                            <div className="flex items-center gap-2 mb-2">
+                            <div className="flex items-start gap-2">
                                 <AlertTriangle className="w-3 h-3" style={{ color: 'var(--accent-gold)' }} />
-                                <p className="text-[10px]" style={{ color: 'var(--aura-text-muted)' }}>
+                                <p className="aura-micro" style={{ color: 'var(--aura-text-muted)' }}>
                                     Does this photo meet all the challenge requirements?
                                 </p>
                             </div>
 
-                            <div className="flex gap-3">
+                            <div className="flex gap-3 sm:gap-4">
                                 <motion.button
+                                    type="button"
                                     whileHover={{ scale: 1.05 }}
                                     whileTap={{ scale: 0.95 }}
                                     onClick={() => handleVote(currentItem.id, true)}
-                                    className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold transition-all duration-200 ${voted[currentItem.id] === true ? 'ring-2' : ''}`}
+                                    className={`flex-1 flex items-center justify-center gap-2 min-h-11 py-3 rounded-xl text-sm font-semibold transition-all duration-200 ${voted[currentItem.id] === true ? 'ring-2' : ''}`}
                                     style={{
                                         background: voted[currentItem.id] === true ? 'var(--stem-primary)' : 'var(--stem-light)',
                                         color: voted[currentItem.id] === true ? '#fff' : 'var(--stem-primary)',
@@ -194,10 +198,11 @@ export default function ReviewView() {
                                     <ThumbsUp className="w-4 h-4" /> Valid
                                 </motion.button>
                                 <motion.button
+                                    type="button"
                                     whileHover={{ scale: 1.05 }}
                                     whileTap={{ scale: 0.95 }}
                                     onClick={() => handleVote(currentItem.id, false)}
-                                    className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold transition-all duration-200 ${voted[currentItem.id] === false ? 'ring-2' : ''}`}
+                                    className={`flex-1 flex items-center justify-center gap-2 min-h-11 py-3 rounded-xl text-sm font-semibold transition-all duration-200 ${voted[currentItem.id] === false ? 'ring-2' : ''}`}
                                     style={{
                                         background: voted[currentItem.id] === false ? 'var(--weed-primary)' : 'var(--weed-light)',
                                         color: voted[currentItem.id] === false ? '#fff' : 'var(--weed-primary)',

@@ -12,21 +12,25 @@ const NAV_ITEMS = [
 export default function BottomNav({ activeTab, setActiveTab }) {
     return (
         <nav
-            className="fixed bottom-0 left-0 right-0 z-50 glass"
+            className="fixed bottom-0 left-0 right-0 z-50 glass pb-[env(safe-area-inset-bottom,0px)]"
             style={{ borderTop: '1px solid var(--aura-border)' }}
+            aria-label="Main navigation"
         >
-            <div className="max-w-5xl mx-auto flex items-center justify-around h-16 px-2">
+            <div className="max-w-5xl mx-auto flex items-stretch justify-around min-h-16 px-1 sm:px-2">
                 {NAV_ITEMS.map((item) => {
                     const isActive = activeTab === item.id;
                     const Icon = item.icon;
                     return (
                         <motion.button
+                            type="button"
                             key={item.id}
                             id={`nav-${item.id}`}
                             onClick={() => setActiveTab(item.id)}
                             whileTap={{ scale: 0.9 }}
-                            className="flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl transition-all duration-200 relative grow"
+                            className="flex flex-col items-center justify-center gap-1 px-2 sm:px-3 py-2 min-h-[3.25rem] sm:min-h-14 rounded-xl transition-all duration-200 relative grow max-w-[5.5rem]"
                             style={{ color: isActive ? 'var(--stem-primary)' : 'var(--aura-text-muted)' }}
+                            aria-current={isActive ? 'page' : undefined}
+                            aria-label={item.label}
                         >
                             {isActive && (
                                 <motion.div
@@ -37,11 +41,11 @@ export default function BottomNav({ activeTab, setActiveTab }) {
                                 />
                             )}
                             <motion.div
-                                animate={{ scale: isActive ? 1.2 : 1 }}
+                                animate={{ scale: isActive ? 1.15 : 1 }}
                             >
-                                <Icon className="w-5 h-5" strokeWidth={isActive ? 2.5 : 1.8} />
+                                <Icon className="w-5 h-5 shrink-0" strokeWidth={isActive ? 2.5 : 1.8} aria-hidden />
                             </motion.div>
-                            <span className="text-[9px] font-black uppercase tracking-tighter">{item.label}</span>
+                            <span className="aura-micro font-black uppercase tracking-wide text-center leading-tight line-clamp-2">{item.label}</span>
                         </motion.button>
                     );
                 })}

@@ -1,0 +1,24 @@
+# Blueprint Render: Web Service (API) + статический фронт (Vite).
+# Статика — это тоже type: web + runtime: static (поле staticSites в спеке больше не используется).
+# https://render.com/docs/blueprint-spec
+
+services:
+  - type: web
+    name: aura-backend
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn -w 2 -k uvicorn.workers.UvicornWorker main:app --bind 0.0.0.0:$PORT
+    envVars:
+      - key: CORS_ORIGINS
+        sync: false
+
+  - type: web
+    name: aura-frontend
+    runtime: static
+    rootDir: .
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    envVars:
+      - key: VITE_API_URL
+        sync: false

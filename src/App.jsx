@@ -26,7 +26,6 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('garden');
   const [showAuth, setShowAuth] = useState(false);
 
-  console.log('App Rendering. User:', user, 'Loading:', loading);
 
   // Loading state
   if (loading) {
@@ -45,8 +44,7 @@ export default function App() {
   }
 
   // Auth/Landing screen
-  if (!user) {
-    console.log('No user detected, showing Auth/Landing');
+  if (!user) {;
     return (
       <AnimatePresence mode="wait">
         {!showAuth ? (
@@ -69,8 +67,10 @@ export default function App() {
             <AuthPage />
             {/* Back button to landing */}
             <button
+              type="button"
               onClick={() => setShowAuth(false)}
-              className="fixed top-6 left-6 z-[60] text-white/40 hover:text-white transition-colors flex items-center gap-2 text-xs font-black uppercase tracking-widest"
+              className="fixed top-[max(1.5rem,env(safe-area-inset-top))] left-[max(1.5rem,env(safe-area-inset-left))] z-[60] transition-colors inline-flex items-center gap-2 min-h-11 px-3 rounded-xl text-xs font-black uppercase tracking-wide"
+              style={{ color: 'var(--aura-text-secondary)' }}
             >
               ← Назад
             </button>
@@ -84,14 +84,14 @@ export default function App() {
   const ActivePage = PAGES[activeTab];
 
   return (
-    <div className="min-h-screen" style={{ background: 'var(--aura-bg)' }}>
+    <div className="w-full flex flex-col min-h-screen" style={{ background: 'var(--aura-bg)' }}>
       {/* Ambient garden background */}
       <div className="garden-bg" />
       <div className="bg-glow-top" />
 
       <Header />
 
-      <main className="relative z-10 max-w-5xl mx-auto px-4 pt-4 pb-20">
+      <main>
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}
@@ -99,6 +99,7 @@ export default function App() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -12 }}
             transition={{ duration: 0.25, ease: 'easeOut' }}
+            className="w-full"
           >
             <ActivePage setActiveTab={setActiveTab} />
           </motion.div>

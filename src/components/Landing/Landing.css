@@ -71,3 +71,8 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
+
+.mask-gradient {
+    -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 85%);
+    mask-image: radial-gradient(ellipse at center, black 40%, transparent 85%);
+}
